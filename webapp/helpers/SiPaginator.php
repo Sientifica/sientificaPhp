@@ -2,7 +2,7 @@
 
 /* ---------------------------------------------------------------------------------------------------
   DESCRIPCIÓN : Paginador para active record frameworksientifica
-  //@author : Ramiro Andrade
+  //@author : Mauricio Muriel
   --------------------------------------------------------------------------------------------------- */
 
 class SiPaginator {
@@ -38,11 +38,13 @@ class SiPaginator {
     public function __construct($model, $quantity = 5, $nlinks = 5, $criteria = null) {
 
         $this->sizes = array($quantity, 10, 50, 100);
-
+       
         if (is_array($model)) {
-            $this->model = @$model['model'];
-            $this->criteria = @$model['criteria'];
-            $this->query = @$model['query'];
+           if(!isset($model['array'])){
+		    $this->model = @$model['model'];
+		    $this->criteria = @$model['criteria'];
+		    $this->query = @$model['query'];
+            }
         } else if (is_object($model)) {
             $this->model = $model;
         }
@@ -63,13 +65,17 @@ class SiPaginator {
         }
         //======================================================================
         //Si se define parametro de búsqueda por sentencia sql
-        if (!is_null($this->query)) {
-            $this->estructure = $this->model->find_by_sql($model['query']);
-        } else {
-            if (sizeof($this->criteria) > 0 || is_object($this->criteria))
-                $this->estructure = $this->model->find("all", $this->criteria);
-            else
-                $this->estructure = $this->model->find("all");
+         if(is_array($model) && isset($model['array'])){
+              $this->estructure = $model['array'];
+         }else{
+		if (!is_null($this->query)) {
+		    $this->estructure = $this->model->find_by_sql($model['query']);
+		} else {
+		    if (sizeof($this->criteria) > 0 || is_object($this->criteria))
+		        $this->estructure = $this->model->find("all", $this->criteria);
+		    else
+		        $this->estructure = $this->model->find("all");
+		}
         }
 
         $this->nlinksPages = $nlinks;
@@ -197,5 +203,6 @@ class SiPaginator {
 
 }
 ?>
+
 
 
