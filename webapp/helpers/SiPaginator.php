@@ -2,7 +2,7 @@
 
 /* ---------------------------------------------------------------------------------------------------
   DESCRIPCIÓN : Paginador para active record frameworksientifica
-  //@author : Ramiro Andrade
+  //@author : Mauricio Muriel
   --------------------------------------------------------------------------------------------------- */
 
 class SiPaginator {
@@ -204,5 +204,6 @@ class SiPaginator {
 
 }
 ?>
+
 
 
