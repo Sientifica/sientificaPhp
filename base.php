@@ -11,6 +11,8 @@ class BaseException extends Exception {
     
 }
 
+
+
 class Base {
 
     private static $configApp;
@@ -85,6 +87,7 @@ class Base {
         'SiController' => '/base/SiController.php',
         'SiView' => '/base/SiView.php',
         'SiModel' => '/base/SiModel.php',
+        'SiModelForm' => '/base/SiModelForm.php',
         'Form' => '/webapp/helpers/Form.php',
         'ActiveRecord\Config' => '/includes/activerecord/ActiveRecord.php',
         'Securimage' => '/includes/securimage/securimage.php',
@@ -102,6 +105,7 @@ class Base {
         'JTree' => '/webapp/helpers/JTree/JTree.php',
         'JTreeIterator' => '/webapp/helpers/JTree/JTreeIterator.php',
         'JTreeRecursiveIterator' => '/webapp/helpers/JTree/JTreeRecursiveIterator.php',
+        'nusoap_client'=>'/includes/nusoap/lib/nusoap.php',
     );
 
     public static function import($path) {
