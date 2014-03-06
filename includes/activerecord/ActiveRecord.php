@@ -42,36 +42,7 @@ function activerecord_autoload($class_name) {
     if (file_exists($file))
         require_once $file;
 
-    // Se cargan los modelos de los modulos
-    $config = Base::getConfigApp();
-    if (isset($config->modules)) {
-        $mods = $config->modules;
-         $path = Base::request()->getBasePathAbsolute();
-        
-         if (isset(Base::getConfigApp()->path_safe_dir)) {
-             $basepath = $path.Base::getConfigApp()->path_safe_dir;
-        } else {
-             $basepath  = $path."/safe";
-        }
-        
-
-        foreach ($mods as $key => $value) {
-            $pathModels = $basepath .DIRECTORY_SEPARATOR. "modules".DIRECTORY_SEPARATOR."{$value}".DIRECTORY_SEPARATOR."models".DIRECTORY_SEPARATOR;
-            $files = SiFunctions::listar_ficheros(array("php"), $pathModels);
-            foreach ($files[0] as $model) {
-                require_once($basepath .DIRECTORY_SEPARATOR. "modules".DIRECTORY_SEPARATOR."{$value}".DIRECTORY_SEPARATOR."models".DIRECTORY_SEPARATOR. $model);
-            }
-        }
-    }
+   
 }
 
-/* function loadInternalModels() {
-
-  $pathModels = SIENTIFICA_PATH . "/webapp/models/";
-  $files = SiFunctions::listar_ficheros(array("php"), $pathModels);
-
-  foreach ($files[0] as $model) {
-  require_once(SIENTIFICA_PATH . "/webapp/models/" . $model);
-  }
-  } */
 ?>

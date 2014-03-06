@@ -3,12 +3,11 @@
 /**
  * Esta clase contiene funciones internas de uso comun
  */
-
 class siFunctionsException extends Exception {
     
 }
 
-class SiFunctions extends Exception{
+class SiFunctions extends Exception {
 
     /**
      * Retorna un nombre aleatrorio de archivo concatenado con la extension pasada como parametro.
@@ -39,7 +38,8 @@ class SiFunctions extends Exception{
         if (strpos($date, "/")) {
             $fec = explode("/", $date);
             return $fec[2] . "-" . $fec[1] . "-" . $fec[0];
-        }else
+        }
+        else
             return false;
     }
 
@@ -56,7 +56,8 @@ class SiFunctions extends Exception{
         if (strpos($date, "-")) {
             $fec = explode("-", $date);
             return $fec[2] . "/" . $fec[1] . "/" . $fec[0];
-        }else
+        }
+        else
             return false;
     }
 
@@ -213,9 +214,8 @@ class SiFunctions extends Exception{
         $diff['year'] = $d1['year'] - $d2['year'];
         return $diff;
     }
-    
-    
-     public static function  time_diff($dt1, $dt2) {
+
+    public static function time_diff($dt1, $dt2) {
         $y1 = substr($dt1, 0, 4);
         $m1 = substr($dt1, 5, 2);
         $d1 = substr($dt1, 8, 2);
@@ -284,8 +284,7 @@ class SiFunctions extends Exception{
             }
             return array($arrFiles, $arrFilesNames);
         } else {
-              throw new siFunctionsException("la ruta $carpeta. no existe");
-            
+            throw new siFunctionsException("la ruta $carpeta. no existe");
         }
     }
 
