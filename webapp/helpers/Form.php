@@ -110,6 +110,51 @@ class Form {
         return $hidden . self::InputElement('radio', $name, $value, $itemsOptions);
     }
 
+    public static function radioButtonList($name, $select, $data, $htmlOptions = array()) {
+        $template = isset($htmlOptions['template']) ? $htmlOptions['template'] : '{input} {label}';
+        $separator = isset($htmlOptions['separator']) ? $htmlOptions['separator'] : "<br/>\n";
+        unset($htmlOptions['template'], $htmlOptions['separator']);
+
+        if (substr($name, -2) !== '[]')
+            $name.='[]';
+
+        if (isset($htmlOptions['checkAll'])) {
+            $checkAllLabel = $htmlOptions['checkAll'];
+            $checkAllLast = isset($htmlOptions['checkAllLast']) && $htmlOptions['checkAllLast'];
+        }
+        unset($htmlOptions['checkAll'], $htmlOptions['checkAllLast']);
+
+        $labelOptions = isset($htmlOptions['labelOptions']) ? $htmlOptions['labelOptions'] : array();
+        unset($htmlOptions['labelOptions']);
+
+        $items = array();
+        $baseID = self::getIdByName($name);
+        $id = 0;
+        $checkAll = true;
+
+        foreach ($data as $value => $label) {
+            $checked = !is_array($select) && !strcmp($value, $select) || is_array($select) && in_array($value, $select);
+            $checkAll = $checkAll && $checked;
+            $htmlOptions['value'] = $value;
+            $htmlOptions['id'] = $baseID . '_' . $id++;
+            $option = self::radioButton($name, $checked, $htmlOptions);
+            $label = self::label($label, $htmlOptions['id'], $labelOptions);
+            $items[] = strtr($template, array('{input}' => $option, '{label}' => $label));
+        }
+
+        if (isset($checkAllLabel)) {
+            $htmlOptions['value'] = 1;
+            $htmlOptions['id'] = $id = $baseID . '_all';
+            $option = self::radioButton($id, $checkAll, $htmlOptions);
+            $label = self::label($checkAllLabel, $id, $labelOptions);
+            $item = strtr($template, array('{input}' => $option, '{label}' => $label));
+            if ($checkAllLast)
+                $items[] = $item;
+        }
+
+        return implode($separator, $items);
+    }
+
     public static function checkBox($name, $checked = false, $itemsOptions = array()) {
         if ($checked)
             $itemsOptions['checked'] = 'checked';
@@ -268,7 +313,7 @@ class Form {
 
         if (strtolower($itemsOptions['method']) == 'get') {
             foreach ($_GET as $key => $value) {
-                if ($key == "module" || $key == "controller" || $key == "action") {                   
+                if ($key == "module" || $key == "controller" || $key == "action") {
                     $hiddens[] = self::hiddenField($key, $value, array('id' => false));
                 }
             }
@@ -700,6 +745,27 @@ class Form {
         return $hidden . self::activeInputElement('radio', $model, $attribute, $itemsOptions);
     }
 
+    public static function activeRadioButtonList($model, $attribute, $data, $htmlOptions = array()) {
+        self::resolveNameID($model, $attribute, $htmlOptions);
+        $selection = self::resolveValue($model, $attribute);
+        if ($model->hasErrors($attribute))
+            self::addErrorCss($htmlOptions);
+        $name = $htmlOptions['name'];
+        unset($htmlOptions['name']);
+
+        if (array_key_exists('uncheckValue', $htmlOptions)) {
+            $uncheck = $htmlOptions['uncheckValue'];
+            unset($htmlOptions['uncheckValue']);
+        }
+        else
+            $uncheck = '';
+
+        $hiddenOptions = isset($htmlOptions['id']) ? array('id' => self::PREFIX . $htmlOptions['id']) : array('id' => false);
+        $hidden = $uncheck !== null ? self::hiddenField($name, $uncheck, $hiddenOptions) : '';
+
+        return $hidden . self::radioButtonList($name, $selection, $data, $htmlOptions);
+    }
+
     public static function activeCheckBox($model, $attribute, $itemsOptions = array()) {
         self::resolveNameID($model, $attribute, $itemsOptions);
         if (!isset($itemsOptions['value']))
@@ -719,6 +785,27 @@ class Form {
         $hidden = $uncheck !== null ? self::hiddenField($itemsOptions['name'], $uncheck, $hiddenOptions) : '';
 
         return $hidden . self::activeInputElement('checkbox', $model, $attribute, $itemsOptions);
+    }
+
+    public static function activeCheckBoxList($model, $attribute, $data, $htmlOptions = array()) {
+        self::resolveNameID($model, $attribute, $htmlOptions);
+        $selection = self::resolveValue($model, $attribute);
+        if ($model->hasErrors($attribute))
+            self::addErrorCss($htmlOptions);
+        $name = $htmlOptions['name'];
+        unset($htmlOptions['name']);
+
+        if (array_key_exists('uncheckValue', $htmlOptions)) {
+            $uncheck = $htmlOptions['uncheckValue'];
+            unset($htmlOptions['uncheckValue']);
+        }
+        else
+            $uncheck = '';
+
+        $hiddenOptions = isset($htmlOptions['id']) ? array('id' => self::PREFIX . $htmlOptions['id']) : array('id' => false);
+        $hidden = $uncheck !== null ? self::hiddenField($name, $uncheck, $hiddenOptions) : '';
+
+        return $hidden . self::checkBoxList($name, $selection, $data, $htmlOptions);
     }
 
     public static function activeDropDownList($model, $attribute, $data, $itemsOptions = array()) {
