@@ -55,9 +55,7 @@ abstract class SiModelForm{
             $this->labelsModel = $this->attributeLabels();
             $this->validate->labels = $this->labelsModel;
             $result = $this->validate->valideInputs();
-            self::$validates_numericality_of = $this->validate->validates_numericality_of;
-            self::$validates_uniqueness_of = $this->validate->validates_uniqueness_of;
-            self::$validates_size_of = $this->validate->validates_size_of;
+          
 
             //$ARValid = parent::is_valid();
             $this->errorsModel = $this->validate->getErrors();
@@ -78,6 +76,14 @@ abstract class SiModelForm{
         $this->attributes = $attributes;
       
     }
+
+
+     public function get_attributes() {        
+        return $this->attributes ;
+      
+    }
+
+  
 
    
 
