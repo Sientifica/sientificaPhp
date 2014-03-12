@@ -20,6 +20,15 @@ class HttpRequest {
             $this->baseUrl = rtrim(dirname($this->getUrlScript()), '\\/');
         return $this->baseUrl;
     }
+
+    public function getHost(){
+         $response = $_SERVER['SERVER_PROTOCOL'];
+         $server_host = $_SERVER['HTTP_HOST'];
+         @list($protocol,$version) = explode("/",$response);
+         $protocol = strtolower ($protocol);
+         $host = $protocol."://".$server_host;
+       return $host;
+    }
     
     
 
