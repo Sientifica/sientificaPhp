@@ -20,14 +20,14 @@ class SiView {
 
     public function setData($data) {
         if (!is_array($data)) {
-            throw new ViewException('$data se esperaba fuera un arreglo, se envio un ' . gettype($data));
+            throw new SiViewException('$data se esperaba fuera un arreglo, se envio un ' . gettype($data));
         }
         $this->data = $data;
     }
 
     public function setLayout($layout) {
         if (!file_exists($layout)) {
-            throw new ViewException('$layout  no es un archivo existente');
+            throw new SiViewException('$layout  no es un archivo existente');
         }
 
         $this->layout = $layout;
@@ -35,7 +35,7 @@ class SiView {
 
     public function setTemplate($template) {
         if (!file_exists($template)) {
-            throw new ViewException('$template no es un archivo existente');
+            throw new SiViewException('$template no es un archivo existente');
         }
 
         $this->template = $template;
