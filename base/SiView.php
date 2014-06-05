@@ -1,6 +1,15 @@
 <?php
 
 class SiViewException extends Exception {
+
+    public function __construct($msg=null){
+
+        if ($msg == null){
+
+            parent::__construct($msg);
+        }
+
+    }
     
 }
 
